@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# should contain atleast one back slash
+# or be file with a dot ( for files like 'filename.tar.gz'
+# will ignore plain pathnames like 'simplefilename'
+pathRegex='((http(s)?://)?([A-Za-z$_0-9@~:./-]*/[A-Za-z$_0-9@~:./-]*))'
+fileNameWithDotRegex='(\b[A-Za-z$0-9@:-]+\.[A-Za-z$0-9@:.-]+\b)'
+combined="(""$pathRegex""|""$fileNameWithDotRegex"")"
+egrep -o $combined  | egrep '[A-Za-z]'

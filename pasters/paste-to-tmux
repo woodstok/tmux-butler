@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+pastecontent="$BUTLERTMPDIR/tmux-butler-outputfile"
+cat > $pastecontent
+if [[ ! -s "$pastecontent" ]]
+then
+        exit 0
+fi
+cur_pane=$(tmux display-message -p "#D")
+
+# Load contents to a tmux buffer named paste
+tmux load-buffer -b paste $pastecontent
+# Dump the contents from the paste buffer named paste
+tmux paste-buffer -b paste -t $cur_pane
+# Delete the paste buffer
+tmux delete-buffer -b paste

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
+
+# Print tmux buffers in with just the name and the sample. 
+# Printing buffername as a key in the fuzzy search
+export READER="tmux lsb -F  '#{buffer_name} #{buffer_sample}'"
+
+# Get the buffername from the selection
+export SELECTOR="fzf --no-sort | cut -d ' ' -f1"
+
+# Fetch the buffer contents of the specified buffer
+export FILTER="xargs tmux show-buffer -b "
+$ROOTDIR/tmux-butler
