@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+urxvtc   -name URxvtFuzzy -geometry 90x20+400+300 -e bash $1

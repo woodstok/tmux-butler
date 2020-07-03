@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+ENVLIST="-e BUTLERTMPDIR=$BUTLERTMPDIR -e BUTLERDEBUG=$BUTLERDEBUG"
+tmux split-window $ENVLIST -v -l 10  bash $1 &

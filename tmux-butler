@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+
+printhelp() {
+   >&2 echo '
+Usage: <ENVOPTIONS> tmux-butler
+    tmux-butler runs a collection of commands/scripts to help in quickly sending strings 
+    to the currently active pane. The default usage would be 
+    1. Fetch all contents of the tmux window
+    2. Tokenize the contents and pass them to fzf
+    3. If a selection was made in fzf, paste the selection to the current pane
+
+    Environment Variables
+    The following environment variables can be used to change the default commands used in a particular stage 
+    READER              Supplies the input to later stages
+    SELECTOR            Launches the fuzzy selector
+    FILTER              Does any final processesing of the selected string
+    PASTER              Finally pastes the processed string 
+    VIEWER              Launches a separate terminal to open the selector command
+    BUTLERTMPDIR        Temporary directory used to store temporary files during processing
+    BUTLERDEBUG         If set, the scripts will not cleanup the temporary files created
+
+    eg: READER="scripts/capture_panes"
+    eg: SELECTOR="fzf"
+    eg: FILTER="cut -d ' ' -f1"
+    eg: PASTER="xsel -ib"
+    eg: VIEWER="viewers/tmux-split"
+
+    For detailed help and examples, checkout README.md
+    '
+}
+
+# PASTER="${PASTER:-$DEFAULTPASTER}"
+# VIEWER="${VIEWER:-$DEFAULTVIEWER}"
+
+# # Override example: cd $(dirname `which tmux-butler`); READER="scripts/capture_panes | scripts/quetty -ip" tmux-butler
+# READER="${READER:-$DEFAULTREADER}"
+# FILTER="${FILTER:-$DEFAULTFILTER}"
+# SELECTOR="${SELECTOR:-$DEFAULTSELECTOR}"
+
+while (( "$#" ));do
+  case $1 in
+    -h|--help)
+      printhelp
+      exit 0
+      ;;
+   *)
+     # tmux-butler does not support any arguments
+     # all modifications are through environment variables
+     echo "Invalid Option: $1" 1>&2
+     printhelp
+     exit 1
+     ;;
+  esac
+done
+
+SCRIPTDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+rcfile=$HOME/.butlerrc
+if [[ -f "$rcfile" ]]
+then
+        source $rcfile
+fi
+
+# load defaults that are not already set
+source $SCRIPTDIR/.butlerrc-defaults
+
+PASTER="${PASTER:-$DEFAULTPASTER}"
+VIEWER="${VIEWER:-$DEFAULTVIEWER}"
+
+# Override example: cd $(dirname `which tmux-butler`); READER="scripts/capture_panes | scripts/quetty -ip" tmux-butler
+READER="${READER:-$DEFAULTREADER}"
+FILTER="${FILTER:-$DEFAULTFILTER}"
+SELECTOR="${SELECTOR:-$DEFAULTSELECTOR}"
+#### start execution
+outputf="$BUTLERTMPDIR/tmux-butler-outputfile"
+stage1f="$BUTLERTMPDIR/tmux-butler-stage1"
+stage2fifo="$BUTLERTMPDIR/tmux-butler-stage2-fifo"
+stage2f="$BUTLERTMPDIR/tmux-butler-stage2"
+selectorcmdf="$BUTLERTMPDIR/tmux-butler-selectorcmdf"
+readercmdf="$BUTLERTMPDIR/tmux-butler-readercmdf"
+processorcmdf="$BUTLERTMPDIR/tmux-butler-processorcmdf"
+pastercmdf="$BUTLERTMPDIR/tmux-butler-pastercmdf"
+
+cleanup() {
+  rm -f $outputf $stage1f $stage2fifo $stage2f $selectorcmdf  $readercmdf $processorcmdf $pastercmdf
+}
+[[ -z $BUTLERDEBUG ]] && trap 'cleanup' EXIT
+
+### STAGE 1 - Fetch initial contents
+cat <<<"$READER > $stage1f" > $readercmdf
+sh $readercmdf
+if [[ ! -s "$stage1f" ]]
+then
+        # Empty file. Exit
+        exit 0
+fi
+
+### STAGE 2 - Let the user pick a selection from the fetched input using a selector ( usually fzf )
+rm -f $stage2fifo
+# Need a fifo because terminalcmds won't wait for the 
+# selector cmd to finish
+mkfifo $stage2fifo
+
+cat <<<"cat $stage1f | $SELECTOR  > $stage2fifo" > $selectorcmdf
+$VIEWER $selectorcmdf
+cat < $stage2fifo > $stage2f
+if [[ ! -s "$stage2f" ]]
+then
+        # Empty file. Exit
+        exit 0
+fi
+
+### STAGE3 - Any final processing of the output selected required. Can be passthrough using cat
+cat <<<"cat $stage2f | $FILTER | perl -pe 'chomp if eof' > $outputf" > $processorcmdf
+sh $processorcmdf
+if [[ $? -eq 1 ]] || [[ ! -s "$outputf" ]]
+then
+        rm $outputf
+        exit 0
+fi
+
+### STAGE 4 - paste the output into tmux/clipboard
+cat <<<"cat $outputf | $PASTER" > $pastercmdf
+sh $pastercmdf
+exit 0

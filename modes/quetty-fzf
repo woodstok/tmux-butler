@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
+
+printhelp() {
+   >&2 echo '
+Usage: quetty-fzf
+A helper script that combines different tokenizers of quetty with fzf.
+quetty-fzf sends the input to fzf. In addition, it also enables 
+a few keybindings inside fzf to easily switch the quetty tokenizers.
+Currently supported tokenizers are -word, -nospace, -hash, -num, -path, -ip
+
+Example:
+        While in the fzf selecter, press C-p to switch to path mode
+    '
+}
+
+while (( "$#" ));do
+  case $1 in
+    -h|--help)
+      printhelp
+      exit 0
+      ;;
+   *)
+     # quetty-fzf does not support any arguments
+     echo "Invalid Option: $1" 1>&2
+     printhelp
+     exit 1
+     ;;
+  esac
+done
+
+inpfile="$BUTLERTMPDIR/quetty-fzf-input-file"
+cleanup() {
+  rm -f $inpfile
+}
+[[ -z $BUTLERDEBUG ]] && trap 'cleanup' EXIT
+
+# save stdin to tmp file
+cat > $inpfile
+
+# setup key bindings for fzf
+# each binding would switch quetty to a different tokenizer/filter
+declare -A keymap
+keymap['ctrl-w']='word'
+keymap['ctrl-e']='nospace'
+keymap['ctrl-h']='hash'
+keymap['ctrl-n']='num'
+keymap['ctrl-p']='path'
+keymap['ctrl-i']='ip'
+header="--header="
+bindings="--bind="
+firstmap=true
+for key in "${!keymap[@]}"
+do
+    header+="$key:${keymap[$key]} "
+    if [ "$firstmap" = false ]
+    then
+            bindings+=","
+    fi
+    bindings+="$key:reload(cat $inpfile | $ROOTDIR/scripts/quetty -${keymap[$key]})"
+    firstmap=false
+done
+
+cat $inpfile | $ROOTDIR/scripts/quetty -word | fzf "$header" "$bindings"

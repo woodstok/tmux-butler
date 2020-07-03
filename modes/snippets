@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
+
+export READER="$ROOTDIR/scripts/snippetdb list"
+
+# fuzzy search only on key column
+# Filter out the first column ( key ) once selected
+export SELECTOR="fzf -n 1 | cut -d ' ' -f1"
+
+export FILTER="xargs $ROOTDIR/scripts/snippetdb get"
+
+$ROOTDIR/tmux-butler

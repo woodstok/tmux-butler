@@ -1,0 +1,7 @@
+SCRIPTDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+export BUTLERTMPDIR="${BUTLERTMPDIR:-/tmp}"
+DEFAULTPASTER="${DEFAULTPASTER:-$SCRIPTDIR/pasters/paste-to-tmux}"
+DEFAULTVIEWER="${DEFAULTVIEWER:-$SCRIPTDIR/viewers/tmux-split}"
+DEFAULTREADER="${DEFAULTREADER:-$SCRIPTDIR/scripts/capture_panes}"
+DEFAULTSELECTOR="${DEFAULTSELECTOR:-$SCRIPTDIR/modes/quetty-fzf}" 
+DEFAULTFILTER="${DEFAULTFILTER:-cat}" 

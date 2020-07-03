@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+key=""  # Default to empty key
+value=""  # Default to empty value
+
+snippetdbstore="$HOME/.snippetdbstore/"
+
+put () {
+  value=$2
+  if [ -z "$value" ]
+  then
+      echo "Empty value. Reading from stdin"
+      value=`cat`
+  fi
+  key=$1; set $(printf %s "$key" | sha1sum); sum=$1
+  mkdir -p "$snippetdbstore/$sum"
+  printf %s "$key" >"$snippetdbstore/$sum/key"
+  printf %s "$value" >"$snippetdbstore/$sum/value"
+}
+
+get () {
+  key=$1; set $(printf %s "$key" | sha1sum); sum=$1
+  cat "$snippetdbstore/$1/value"
+}
+
+remove () {
+  key=$1; set $(printf %s "$key" | sha1sum); sum=$1
+  rm -rf "$snippetdbstore/$1"
+}
+
+list () {
+        for f in $snippetdbstore/*
+        do
+                # echo $(cat $f/key)	$(cat $f/value)
+                printf "%-20s" "$(cat $f/key)"
+                echo $(cat $f/value)
+        done
+
+}
+
+printhelp() {
+      echo "Usage:"
+      echo "    snippetdb -h                      Display this help message."
+      echo "    snippetdb put key [value]         Store key=value"
+      echo "                                      If value is not provided, store from stdin" 
+      echo "    snippetdb get key                 Retrieve key"
+      echo "    snippetdb remove key              Remove key"
+      echo "    snippetdb list                    List all key/value"
+}
+
+# Parse options to the
+while getopts ":h" opt; do
+  case ${opt} in
+    h )
+      printhelp
+      exit 0
+      ;;
+   \? )
+     echo "Invalid Option: -$OPTARG" 1>&2
+     printhelp
+     exit 1
+     ;;
+  esac
+done
+shift $((OPTIND -1))
+
+subcommand=$1; shift  # Remove 'snippetdb' from the argument list
+case "$subcommand" in
+  # Parse options to the snippetdb sub command
+  put)
+    key=$1; shift  # Remove 'put' from the argument list
+    if [ -z "$key" ]
+    then
+          echo "Invalid key; Should be nonempty"
+          printhelp
+          exit 1
+    fi
+    value=$1; shift
+    put $key $value
+    ;;
+  get)
+    key=$1; shift  # Remove 'get' from the argument list
+    if [ -z "$key" ]
+    then
+          echo "Invalid key; Should be nonempty"
+          printhelp
+          exit 1
+    fi
+    get $key
+    ;;
+  remove)
+    key=$1; shift  # Remove 'remove' from the argument list
+    if [ -z "$key" ]
+    then
+          echo "Invalid key; Should be nonempty"
+          printhelp
+          exit 1
+    fi
+    remove $key
+    ;;
+  list)
+        list
+    ;;
+   *)
+     echo "Invalid command: "
+     printhelp
+     exit 1
+     ;;
+esac
