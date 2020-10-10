@@ -200,6 +200,17 @@ SELECTOR   - fzf -n 1 | cut -d ' ' -f1
 FILTER     - xargs scripts/snippetdb get
              # Fetch the valye of the given key
 ```
+
+Related projects
+------------------
+
+There are similar projects with similar functionality
+
+- [extrakto](https://github.com/laktak/extrakto) - Very similar functionality to tmux-butler, but has a nicer shortcuts to edit the selection, paste to clipboard etc.
+Why tmux-butler instead of extrakto? The tmux-butler tokenizer is also written in bash and it is very easy to write custom filters and tokenizers using grep.
+
+- [tmux-thumbs](https://github.com/fcsonline/tmux-thumbs) and [tmux-fingers](https://github.com/Morantron/tmux-fingers) for hint based selection
+
 [License](LICENSE)
 ------------------
 
