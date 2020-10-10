@@ -15,6 +15,19 @@ Requirements
 
 Installation
 -----
+#### Using [tmux plugin manager](https://github.com/tmux-plugins/tpm)
+Add the `tmux-butler` to the list of TPM plugins in `.tmux.conf`:
+
+    set -g @plugin 'woodstok/tmux-butler'
+
+Fetch the plugin by pressing `prefix + I`.
+This will load the basic default keybindings for tmux-butler ie 
+
+<kbd>Meta</kbd> + <kbd>i</kbd> will invoke tmux-butler.  
+<kbd>Meta</kbd> + <kbd>p</kbd> will invoke tmux-butler with paths mode.  
+<kbd>Meta</kbd> + <kbd>s</kbd> will invoke tmux-butler with snippets mode.  
+
+#### Manual installation
 
 ```sh
 git clone --depth 1 https://github.com/woodstok/tmux-butler ~/.tmux-butler
@@ -23,11 +36,15 @@ tmux-butler is made to be used via tmux keybindings.
 Add the following to your `~/.tmux.conf`:
 ```
 bind-key -n M-i run-shell -b "$HOME/.tmux-butler/tmux-butler"
+bind-key -n M-p run-shell -b "$HOME/.tmux-butler/modes/paths"
+
 ```
 Reload `~/.tmux.conf` by running 
 ```
 $ tmux source-file ~/.tmux.conf
 ```
+Checkout more modes in the `modes` directory and add them to tmux key-bindings.
+
 Usage
 -----
 <kbd>Meta</kbd> + <kbd>I</kbd> will invoke tmux-butler.  
