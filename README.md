@@ -86,6 +86,8 @@ sending the output to  your system clipboard or anywhere you want it to be. They
 
 ### Other helper scripts ###
 #### quetty ####
+[quetty](docs/QUETTY.md)
+
 quetty is the default SELECTOR used. quetty filters the input and dumps out strings that matches the specified regexes and custom filters. It has a few inbuilt tokenizers like 
 
 hash - hash values 
@@ -201,6 +203,11 @@ FILTER     - xargs scripts/snippetdb get
              # Fetch the valye of the given key
 ```
 
+To use the snippets mode, keep adding useful snippets. 
+```
+echo git commit | scripts/snippetdb put gc
+```
+
 Related projects
 ------------------
 
@@ -210,6 +217,10 @@ There are similar projects with similar functionality
 Why tmux-butler instead of extrakto? The tmux-butler tokenizer is also written in bash and it is very easy to write custom filters and tokenizers using grep.
 
 - [tmux-thumbs](https://github.com/fcsonline/tmux-thumbs) and [tmux-fingers](https://github.com/Morantron/tmux-fingers) for hint based selection
+
+Contributing
+----------
+tmux-butler was made to be easily added upon with more powerful scripts. Feel free to contribute and send pull requests. 
 
 [License](LICENSE)
 ------------------
