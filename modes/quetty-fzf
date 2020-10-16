@@ -7,7 +7,7 @@ Usage: quetty-fzf
 A helper script that combines different tokenizers of quetty with fzf.
 quetty-fzf sends the input to fzf. In addition, it also enables 
 a few keybindings inside fzf to easily switch the quetty tokenizers.
-Currently supported tokenizers are -word, -nospace, -hash, -num, -path, -ip
+Currently supported tokenizers are -word, -nospace, -hash, -num, -path, -ip, -line
 
 Example:
         While in the fzf selecter, press C-p to switch to path mode
@@ -47,6 +47,7 @@ keymap['ctrl-h']='hash'
 keymap['ctrl-n']='num'
 keymap['ctrl-p']='path'
 keymap['ctrl-i']='ip'
+keymap['ctrl-l']='line'
 header="--header="
 bindings="--bind="
 firstmap=true

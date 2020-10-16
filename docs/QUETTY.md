@@ -11,6 +11,7 @@ The filters can be predefined, regular expressions specified using the `-regex` 
 - word - strings that match \w+
 - path - filesystem path like strings
 - quote - entire single and double quoted strings
+- line - whole lines
 
 eg: To filter out ip addressess and paths from standard input
 ```
