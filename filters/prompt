@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# common bash prompt
+defaultPrompts='(\[.*\]($|#))'
+# custom prompt
+customPrompt='λ '
+promptRegex="^(($customPrompt)|($defaultPrompts)).*$"
+egrep -E -o "$promptRegex" | sed -Ee "s/^(($customPrompt)|($defaultPrompts))[[:space:]]*//" -e 's/[[:space:]]*$//'
