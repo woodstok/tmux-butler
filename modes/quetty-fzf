@@ -47,7 +47,7 @@ keymap['ctrl-h']='hash'
 keymap['ctrl-n']='num'
 keymap['ctrl-p']='path'
 keymap['ctrl-i']='ip'
-keymap['ctrl-h']='line'
+keymap['ctrl-l']='line'
 header="--header="
 bindings="--bind="
 firstmap=true

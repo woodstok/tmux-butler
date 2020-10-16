@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+lineRegex='^.*$'
+egrep -o $lineRegex | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
