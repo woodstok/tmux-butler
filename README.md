@@ -181,6 +181,14 @@ SELECTOR - fzf
 FILTER   - cat
 PASTER   - pasters/paste-to-tmux
 ```
+##### modes/line #####
+Show and select from whole lines
+```
+READER   - scripts/capture_panes | $ROOTDIR/scripts/quetty -line
+SELECTOR - fzf
+FILTER   - cat
+PASTER   - pasters/paste-to-tmux
+```
 ##### modes/tmuxbuffers #####
 Show and select from tmux buffer list
 ```
