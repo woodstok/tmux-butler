@@ -31,7 +31,6 @@ Inbuilt tokenizers/filters
         Tokenize basic numbers
   -word
         Tokenize basic words(w+)
-
 Custom filters
   -<custom> 
         If a file named <custom> exists in $SCRIPTDIR/filters directory,
@@ -41,6 +40,8 @@ Custom filters
         Filters out filesystem path like strings from the input
   -quote
         Filters out single quoted and double quoted strings
+  -line
+        Match entire line
 
 EXAMPLES
   quetty -path -num

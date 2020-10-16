@@ -55,6 +55,7 @@ By default tmux-butler
     - <kbd>Ctrl</kbd>+<kbd>p</kbd> - Will display only text that matches path regex
     - <kbd>Ctrl</kbd>+<kbd>h</kbd> - Will display only text that are hashes
     - <kbd>Ctrl</kbd>+<kbd>i</kbd> - Will display only text that are ip addresses and prefixes
+    - <kbd>Ctrl</kbd>+<kbd>l</kbd> - Will display whole-lines
 * If anything was selected, send/paste the contents to the tmux pane we started from
 
 The stages
@@ -91,6 +92,7 @@ sending the output to  your system clipboard or anywhere you want it to be. They
 quetty is the default SELECTOR used. quetty filters the input and dumps out strings that matches the specified regexes and custom filters. It has a few inbuilt tokenizers like 
 
 hash - hash values 
+line - whole-lines
 ip - ip addresses and ip prefixes
 nospace - strings that match \S+
 num - numbers
@@ -109,7 +111,7 @@ eg: -path is a custom filter. Take a look at the `fitlers/path` script for a sim
 A helper script that combines different tokenizers of quetty with fzf.
 quetty-fzf sends the input to fzf. In addition, it also enables 
 a few keybindings inside fzf to easily switch the quetty tokenizers.
-Currently supported tokenizers are -word, -nospace, -hash, -num, -path, -ip
+Currently supported tokenizers are -word, -nospace, -hash, -num, -path, -ip, -line
 
 Example:
         While in the fzf selecter, press C-p to switch to path mode
@@ -175,6 +177,14 @@ PASTER   - pasters/paste-to-tmux
 Show and select only path like strings
 ```
 READER   - scripts/capture_panes | $ROOTDIR/scripts/quetty -path
+SELECTOR - fzf
+FILTER   - cat
+PASTER   - pasters/paste-to-tmux
+```
+##### modes/line #####
+Show and select from whole lines
+```
+READER   - scripts/capture_panes | $ROOTDIR/scripts/quetty -line
 SELECTOR - fzf
 FILTER   - cat
 PASTER   - pasters/paste-to-tmux
