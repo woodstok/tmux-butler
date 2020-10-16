@@ -31,6 +31,8 @@ Inbuilt tokenizers/filters
         Tokenize basic numbers
   -word
         Tokenize basic words(w+)
+  -line
+        Match entire line
 
 Custom filters
   -<custom> 
@@ -63,6 +65,7 @@ IDENTREGEX='[A-Za-z]+([_-][A-Za-z0-9]+)*[A-Za-z0-9]*'
 IDENTREGEXWITHDOT='[A-Za-z]+([._-][A-Za-z0-9]+)*[A-Za-z0-9]*'
 NOSPACEREGEX='\S+'
 NUMREGEX='[0-9]+'
+LINEREGEX='^.*$'
 
 ## technically all numbers match a basic hashregex
 ## but let us only match hashes that has
@@ -107,6 +110,10 @@ while (( "$#" )); do
       ;;
     -num)
         REGEXLIST+=($NUMREGEX)
+        shift
+        ;;
+    -line)
+        REGEXLIST+=($LINEREGEX)
         shift
         ;;
     -hash)
