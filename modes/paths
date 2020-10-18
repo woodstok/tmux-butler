@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
-
-export QUETTYFZF_START="path"
-
-$ROOTDIR/tmux-butler
