@@ -2,8 +2,6 @@
 
 ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
 
-# Make quetty filter quoted strings
-export READER="$ROOTDIR/scripts/capture_panes | $ROOTDIR/scripts/quetty -quote"
-export SELECTOR="fzf"
+export QUETTYFZF_START="quote"
 
 $ROOTDIR/tmux-butler
