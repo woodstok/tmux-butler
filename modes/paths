@@ -2,8 +2,6 @@
 
 ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
 
-# Make quetty filter paths from pane contents 
-export READER="$ROOTDIR/scripts/capture_panes | $ROOTDIR/scripts/quetty -path"
-export SELECTOR="fzf"
+export QUETTYFZF_START="path"
 
 $ROOTDIR/tmux-butler
