@@ -9,10 +9,19 @@ quetty-fzf sends the input to fzf. In addition, it also enables
 a few keybindings inside fzf to easily switch the quetty tokenizers.
 Currently supported tokenizers are -word, -nospace, -hash, -num, -path, -ip, -line
 
+ENVIRONMENT VARIABLES
+   QUETTYFZF_START         Specify the starting mode for quetty-fzf. Default is "word"
+
+Options
+  -start STARTMODE
+        If specified overrides the QUETTYFZF_START variable to specify the starting mode.
+
 Example:
         While in the fzf selecter, press C-p to switch to path mode
     '
 }
+
+startmode="${QUETTYFZF_START:-word}"
 
 while (( "$#" ));do
   case $1 in
@@ -20,8 +29,17 @@ while (( "$#" ));do
       printhelp
       exit 0
       ;;
+    -start)
+      if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+        startmode=$2
+        shift 2
+      else
+        echo "Error: Argument for $1 is missing" >&2
+        exit 1
+      fi
+      ;;
    *)
-     # quetty-fzf does not support any arguments
+     # quetty-fzf does not support any other arguments
      echo "Invalid Option: $1" 1>&2
      printhelp
      exit 1
@@ -62,4 +80,4 @@ do
     firstmap=false
 done
 
-cat $inpfile | $ROOTDIR/scripts/quetty -word | fzf "$header" "$bindings"
+cat $inpfile | $ROOTDIR/scripts/quetty -$startmode | fzf "$header" "$bindings"

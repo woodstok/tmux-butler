@@ -35,8 +35,9 @@ git clone --depth 1 https://github.com/woodstok/tmux-butler ~/.tmux-butler
 tmux-butler is made to be used via tmux keybindings.
 Add the following to your `~/.tmux.conf`:
 ```
-bind-key -n M-i run-shell -b "$HOME/.tmux-butler/tmux-butler"
-bind-key -n M-p run-shell -b "$HOME/.tmux-butler/modes/paths"
+bind-key -n M-i run-shell -b "$HOME/.tmux-butler/modes/quetty-filter -start word"
+bind-key -n M-p run-shell -b "$HOME/.tmux-butler/modes/quetty-filter -start path"
+bind-key -n M-s run-shell -b "$HOME/.tmux-butler/modes/snippets"
 
 ```
 Reload `~/.tmux.conf` by running 
@@ -152,9 +153,9 @@ VIEWER=$SCRIPTDIR/viewers/tmux-popup
 A mode is just another script which can be used to group specific customisations mentioned above.
 Instead of using the default values in `tmux-butler`, you can choose specific modes that will override certain stages before executing `tmux-butler`.
 eg: 
-- paths - only use the path tokenizer ( instead of all the options provided by `quetty_fzf`
+- quetty-filter - Default mode that specify the starting filter mode using `-start` argument. Default is `word` mode.
 ```
-bind-key -n M-p run-shell -b "$HOME/.tmux-butler/modes/paths"
+bind-key -n M-p run-shell -b "$HOME/.tmux-butler/modes/quetty-filter -start path"
 ```
 - tmuxbuffers - pick and choose from the tmux copy history
 ```
@@ -173,22 +174,24 @@ SELECTOR - modes/quetty_fzf
 FILTER   - cat
 PASTER   - pasters/paste-to-tmux
 ```
-##### modes/paths #####
-Show and select only path like strings
+##### modes/quetty-filter #####
+Mode to change the starting filter of `quetty-fzf` using the `-start` flag.
 ```
-READER   - scripts/capture_panes | $ROOTDIR/scripts/quetty -path
-SELECTOR - fzf
+READER   - scripts/capture_panes
+SELECTOR - modes/quetty_fzf
 FILTER   - cat
 PASTER   - pasters/paste-to-tmux
 ```
-##### modes/line #####
-Show and select from whole lines
+eg:
+- To bind a key to start with the `line` filter
 ```
-READER   - scripts/capture_panes | $ROOTDIR/scripts/quetty -line
-SELECTOR - fzf
-FILTER   - cat
-PASTER   - pasters/paste-to-tmux
+bind-key -n M-l run-shell -b "$HOME/.tmux-butler/modes/quetty-filter -start line"
 ```
+- To bind a key to start with the `ip` filter
+```
+bind-key -n M-l run-shell -b "$HOME/.tmux-butler/modes/quetty-filter -start ip"
+```
+
 ##### modes/tmuxbuffers #####
 Show and select from tmux buffer list
 ```
