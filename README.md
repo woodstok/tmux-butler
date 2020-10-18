@@ -191,6 +191,15 @@ bind-key -n M-l run-shell -b "$HOME/.tmux-butler/modes/quetty-filter -start line
 ```
 bind-key -n M-l run-shell -b "$HOME/.tmux-butler/modes/quetty-filter -start ip"
 ```
+##### modes/quetty-filter -start cmdline #####
+The cmdline filter matches default bash prompt regexes to select all bash commands visible in the current window.
+The filter tries to match a regex `^\[.*\](#|$)` which  is the default bash prompt in many installations.
+In addition to the default prompt, you can also specify your shell custom prompt using the environment variable `CUSTOMPROMPT` in `~/.butlerrc`.
+eg:
+```
+CUSTOMPROMPT='λ '
+```
+This will search for prompts matching the regex at the beginning of a line, in addition to the default prompt regexes.
 
 ##### modes/tmuxbuffers #####
 Show and select from tmux buffer list

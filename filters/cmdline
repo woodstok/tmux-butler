@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# common bash prompt
+
+# Load the CUSTOMPROMPT env variable from rc files if any
+SCRIPTDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/.."
+rcfile=$HOME/.butlerrc
+if [[ -f "$rcfile" ]]
+then
+        source $rcfile
+fi
+
+# load defaults that are not already set
+source $SCRIPTDIR/.butlerrc-defaults
+
+# OR all the prompt regexes
+defaultBashPrompt1='\[.*\]\$'
+defaultBashPrompt2='\[.*\]#'
+regexlist=( $defaultBashPrompt1 $defaultBashPrompt2 )
+# custom prompt
+if [[ -n "$CUSTOMPROMPT" ]]
+then
+        regexlist+=( "$CUSTOMPROMPT" )
+fi
+
+promptRegex="^("
+first="1"
+for regex in "${regexlist[@]}"
+do
+
+        if [[ "$first" != "1" ]]
+        then
+                promptRegex="$promptRegex|"
+        fi
+        promptRegex="$promptRegex($regex)"
+        first=0
+done
+promptRegex="$promptRegex)"
+
+# grep and remove leading/trailing whitespace
+egrep -E -o "$promptRegex.*$" | sed -Ee "s/$promptRegex[[:space:]]*//" -e 's/[[:space:]]*$//'
