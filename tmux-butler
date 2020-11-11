@@ -55,6 +55,15 @@ done
 
 SCRIPTDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+# Saves the relevant environment variables to .env file to be sourced later by other scripts/stages
+save-environment() {
+for envVar in PASTER VIEWER READER FILTER SELECTOR BUTLERTMPDIR QUETTYFZF_START
+do
+        echo "$envVar=\"${!envVar}\""
+done
+
+} > $SCRIPTDIR/.env
+
 rcfile=$HOME/.butlerrc
 if [[ -f "$rcfile" ]]
 then
@@ -71,6 +80,8 @@ VIEWER="${VIEWER:-$DEFAULTVIEWER}"
 READER="${READER:-$DEFAULTREADER}"
 FILTER="${FILTER:-$DEFAULTFILTER}"
 SELECTOR="${SELECTOR:-$DEFAULTSELECTOR}"
+
+save-environment
 #### start execution
 outputf="$BUTLERTMPDIR/tmux-butler-outputfile"
 stage1f="$BUTLERTMPDIR/tmux-butler-stage1"

@@ -57,6 +57,10 @@ EXAMPLES
 }
 
 ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
+if [[ -f "$ROOTDIR/.env" ]]
+then
+        source "$ROOTDIR/.env"
+fi
 
 # Regex Definitions
 WORDREGEX='\w+'

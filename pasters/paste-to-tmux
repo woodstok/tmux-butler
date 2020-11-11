@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
+if [[ -f "$ROOTDIR/.env" ]]
+then
+        source "$ROOTDIR/.env"
+fi
+
 pastecontent="$BUTLERTMPDIR/tmux-butler-outputfile"
 cat > $pastecontent
 if [[ ! -s "$pastecontent" ]]
