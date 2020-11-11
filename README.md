@@ -53,10 +53,10 @@ Usage
 By default tmux-butler 
 * Captures text from all the visible panes
 * Opens up the quetty script in a tmux split-window. quetty is a wrapper over fzf with a few in-built keyboard shortcuts that help to quickly filter text based on regex.  eg: 
-    - <kbd>Ctrl</kbd>+<kbd>p</kbd> - Will display only text that matches path regex
-    - <kbd>Ctrl</kbd>+<kbd>h</kbd> - Will display only text that are hashes
-    - <kbd>Ctrl</kbd>+<kbd>i</kbd> - Will display only text that are ip addresses and prefixes
-    - <kbd>Ctrl</kbd>+<kbd>l</kbd> - Will display whole-lines
+    - <kbd>Meta</kbd>+<kbd>p</kbd> - Will display only text that matches path regex
+    - <kbd>Meta</kbd>+<kbd>h</kbd> - Will display only text that are hashes
+    - <kbd>Meta</kbd>+<kbd>i</kbd> - Will display only text that are ip addresses and prefixes
+    - <kbd>Meta</kbd>+<kbd>l</kbd> - Will display whole-lines
 * If anything was selected, send/paste the contents to the tmux pane we started from
 
 The stages
@@ -115,7 +115,7 @@ a few keybindings inside fzf to easily switch the quetty tokenizers.
 Currently supported tokenizers are -word, -nospace, -hash, -num, -path, -ip, -line
 
 Example:
-        While in the fzf selecter, press C-p to switch to path mode
+        While in the fzf selecter, press M-p to switch to path mode
 
 ##### snippetdb #####
 snippetdb is a simple key value store that lets you create and store simple snippets. This can be used by 
