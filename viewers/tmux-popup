@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-ENVLIST="BUTLERTMPDIR=$BUTLERTMPDIR BUTLERDEBUG=$BUTLERDEBUG QUETTYFZF_START=$QUETTYFZF_START"
 
 pwidth=80
 winwidth=$(tmux display-message -p "#{client_width}")
 xpos=$((   ($winwidth / 2 ) - ($pwidth / 2 ) ))
-tmux popup -d '#{pane_current_path}' -w 80 -h 15 -x$xpos -y0 -K -E -R "$ENVLIST bash -i $1" &
+tmux popup -d '#{pane_current_path}' -w 80 -h 15 -x$xpos -y0 -K -E -R "bash -i $1" &
