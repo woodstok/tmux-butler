@@ -21,7 +21,7 @@ Options
         If specified overrides the QUETTYFZF_START variable to specify the starting mode.
 
 Example:
-        While in the fzf selecter, press C-p to switch to path mode
+        While in the fzf selecter, press M-p to switch to path mode
     '
 }
 
@@ -63,13 +63,13 @@ cat > $inpfile
 # setup key bindings for fzf
 # each binding would switch quetty to a different tokenizer/filter
 declare -A keymap
-keymap['ctrl-w']='word'
-keymap['ctrl-e']='nospace'
-keymap['ctrl-h']='hash'
-keymap['ctrl-n']='num'
-keymap['ctrl-p']='path'
-keymap['ctrl-i']='ip'
-keymap['ctrl-l']='line'
+keymap['alt-w']='word'
+keymap['alt-e']='nospace'
+keymap['alt-h']='hash'
+keymap['alt-n']='num'
+keymap['alt-p']='path'
+keymap['alt-i']='ip'
+keymap['alt-l']='line'
 header="--header="
 bindings="--bind="
 firstmap=true
