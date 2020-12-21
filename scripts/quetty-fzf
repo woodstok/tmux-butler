@@ -73,6 +73,7 @@ keymap['alt-l']='line'
 header="--header="
 bindings="--bind="
 firstmap=true
+header+="alt-x:EDIT "
 for key in "${!keymap[@]}"
 do
     header+="$key:${keymap[$key]} "
@@ -83,5 +84,6 @@ do
     bindings+="$key:reload(cat $inpfile | $ROOTDIR/scripts/quetty -${keymap[$key]})"
     firstmap=false
 done
+bindings+=",alt-x:execute(touch $BUTLERTMPDIR/editorf)+accept"
 
 cat $inpfile | $ROOTDIR/scripts/quetty -$startmode | fzf "$header" "$bindings"
