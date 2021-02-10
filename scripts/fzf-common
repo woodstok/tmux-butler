@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Run fzf with default defined headers and bindings
+
+ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
+if [[ -f "$ROOTDIR/.env" ]]
+then
+        source "$ROOTDIR/.env"
+fi
+
+header="--header="
+bindings="--bind="
+header+="$FZFHEADER"
+if [[ -n "$FZFBINDING" ]]
+then
+        bindings+="$FZFBINDING"
+fi
+fzf "$header" "$bindings" $*

@@ -5,7 +5,7 @@ export READER="$ROOTDIR/scripts/snippetdb list"
 
 # fuzzy search only on key column
 # Filter out the first column ( key ) once selected
-export SELECTOR="fzf -n 1 | cut -d ' ' -f1"
+export SELECTOR="$ROOTDIR/scripts/fzf-common -n 1 | cut -d ' ' -f1"
 
 export FILTER="xargs $ROOTDIR/scripts/snippetdb get"
 
