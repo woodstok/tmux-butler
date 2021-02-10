@@ -57,7 +57,7 @@ SCRIPTDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 # Saves the relevant environment variables to .env file to be sourced later by other scripts/stages
 save-environment() {
-for envVar in PASTER VIEWER READER FILTER SELECTOR BUTLERTMPDIR QUETTYFZF_START
+for envVar in PASTER VIEWER READER FILTER SELECTOR BUTLERTMPDIR QUETTYFZF_START FZFHEADER FZFBINDING
 do
         echo "$envVar=\"${!envVar}\""
 done

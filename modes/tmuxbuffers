@@ -7,7 +7,7 @@ ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
 export READER="tmux lsb -F  '#{buffer_name} #{buffer_sample}'"
 
 # Get the buffername from the selection
-export SELECTOR="fzf --no-sort | cut -d ' ' -f1"
+export SELECTOR="$ROOTDIR/scripts/fzf-common -n 1 --no-sort | cut -d ' ' -f1"
 
 # Fetch the buffer contents of the specified buffer
 export FILTER="xargs tmux show-buffer -b "
