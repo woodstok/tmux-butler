@@ -73,6 +73,7 @@ keymap['alt-l']='line'
 header="--header="
 bindings="--bind="
 firstmap=true
+header+="$FZFHEADER"
 for key in "${!keymap[@]}"
 do
     header+="$key:${keymap[$key]} "
@@ -83,5 +84,9 @@ do
     bindings+="$key:reload(cat $inpfile | $ROOTDIR/scripts/quetty -${keymap[$key]})"
     firstmap=false
 done
+if [[ -n "$FZFBINDING" ]]
+then
+        bindings+=",$FZFBINDING"
+fi
 
 cat $inpfile | $ROOTDIR/scripts/quetty -$startmode | fzf "$header" "$bindings"

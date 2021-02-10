@@ -57,7 +57,7 @@ SCRIPTDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 # Saves the relevant environment variables to .env file to be sourced later by other scripts/stages
 save-environment() {
-for envVar in PASTER VIEWER READER FILTER SELECTOR BUTLERTMPDIR QUETTYFZF_START
+for envVar in PASTER VIEWER READER FILTER SELECTOR BUTLERTMPDIR QUETTYFZF_START FZFHEADER FZFBINDING
 do
         echo "$envVar=\"${!envVar}\""
 done
@@ -91,9 +91,13 @@ selectorcmdf="$BUTLERTMPDIR/tmux-butler-selectorcmdf"
 readercmdf="$BUTLERTMPDIR/tmux-butler-readercmdf"
 processorcmdf="$BUTLERTMPDIR/tmux-butler-processorcmdf"
 pastercmdf="$BUTLERTMPDIR/tmux-butler-pastercmdf"
+editorcmdf="$BUTLERTMPDIR/editorf"
+editorfifo="$BUTLERTMPDIR/editorfifo"
+editorinput="$BUTLERTMPDIR/editorinput"
+rm -f $editorcmdf
 
 cleanup() {
-  rm -f $outputf $stage1f $stage2fifo $stage2f $selectorcmdf  $readercmdf $processorcmdf $pastercmdf
+  rm -f $outputf $stage1f $stage2fifo $stage2f $selectorcmdf  $readercmdf $processorcmdf $pastercmdf $editorcmdf
 }
 [[ -z $BUTLERDEBUG ]] && trap 'cleanup' EXIT
 
@@ -128,6 +132,16 @@ if [[ $? -eq 1 ]] || [[ ! -s "$outputf" ]]
 then
         rm $outputf
         exit 0
+fi
+
+if [[ -f "$editorcmdf" ]]
+then
+        cp $outputf $editorinput
+        rm -f $editorfifo
+        mkfifo $editorfifo
+        cat <<<"vim $editorinput; cat $editorinput > $editorfifo" > $editorcmdf
+        $VIEWER $editorcmdf
+        cat < $editorfifo | perl -pe 'chomp if eof' > $outputf
 fi
 
 ### STAGE 4 - paste the output into tmux/clipboard
