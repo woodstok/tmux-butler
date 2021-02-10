@@ -144,6 +144,9 @@ then
         cat < $editorfifo | perl -pe 'chomp if eof' > $outputf
 fi
 
+cat $outputf >> $SCRIPTDIR/.history
+echo >> $SCRIPTDIR/.history
+
 ### STAGE 4 - paste the output into tmux/clipboard
 cat <<<"cat $outputf | $PASTER" > $pastercmdf
 sh $pastercmdf

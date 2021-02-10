@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+ROOTDIR="$( cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P )"
+
+export READER="cat $ROOTDIR/.history | uniq"
+
+# Get the buffername from the selection
+export SELECTOR="$ROOTDIR/scripts/fzf-common  --no-sort"
+
+$ROOTDIR/tmux-butler
